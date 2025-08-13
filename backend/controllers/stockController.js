@@ -32,7 +32,6 @@ const addStock = async (req, res) => {
 
 const updateStock = async (req, res) => {
     const {  title, quantity, createDate, status, updateDate } = req.body;
-    console.log(req.body)
     const managerId = req.admin.id
     try {
         const stock = await Stock.findById(req.params.id);
