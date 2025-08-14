@@ -8,6 +8,7 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+
 async function sendLowStockEmail(to, items, displayName = 'there') {
   const subject = `[Action Required] Low stock items (${items.length})`;
   const listText = items.map(s => `• ${s.title} (qty: ${s.quantity})`).join('\n');
