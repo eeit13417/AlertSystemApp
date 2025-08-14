@@ -10,4 +10,5 @@ router.get('/profile', protect, getadmin);
 router.put('/profile', protect, updateAdmin);
 router.get('/list', protect, getAdmins);
 
+
 module.exports = router;
