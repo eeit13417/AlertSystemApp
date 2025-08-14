@@ -1,17 +1,20 @@
-**Task Manager Application Overview:The task manager application is designed to help users efficiently manage their tasks and responsibilities by providing a user-friendly interface for creating, viewing, updating, and deleting tasks. It includes essential features such as secure user authentication, allowing individuals to sign up and log in to their accounts, as well as profile management to update personal information. With built-in validation such as input field validation and email validation, the application ensures a seamless user experience while enhancing productivity and organization in both personal and professional settings. **
+** Alert system app **
 
 **This apps **contain** the following features:**
 
 * Signup
 * Login
 * Logout
-* Update profile
-* Add tasks
-* View tasks
-* Update tasks
-* Delete tasks
-
-**This **app**lication** is**almost **a** precompiled** app**. However, students will develop some features,**such as adding tasks, viewing tasks, updating tasks, and **deleting** tasks**. **Students** will interact with GitHub when they develop the features.**
+* Add stocks
+* View stocks
+* Update stocks
+* Delete stocks
+* search stocks
+* Display low-stock warning messages 
+* Restock Notification (email)
+* edit profile
+* edit admin role
+* delete admin
 
 ---
 
@@ -24,3 +27,26 @@
 * **GitHub Account** [[https://github.com/signup?source=login](https://github.com/signup?source=login)]** **
 
 ---
+
+** Environment Variables ** : 
+MONGO_URI=mongodb+srv://MingYuanChen:12345@cluster0.5e2wvii.mongodb.net/AlertSystemApp
+?retryWrites=true&w=majority&appName=Cluster0
+JWT_SECRET=2J8zqkP7VN6bxzg+Wy7DQZsd3Yx8mF3Bl0kch6HYtFs=
+PORT=5001
+SMTP_USER=mingyuanchen5@gmail.com
+SMTP_PASS=ecoy wiypywvxsuhi
+MAIL_FROM="Inventory Bot <yourgmail@gmail.com>"
+CRON_SCHEDULE=0 9 * * *
+
+** Login **
+- Username: `minwen0734@gmail.com`
+- Password: `1234`
+
+
+** Email Notification Scheduler ** : 
+The system includes a Low Stock Email Notification feature that automatically sends restock reminder emails on a set schedule.  
+You can configure the schedule time in the `.env` file, or trigger it manually via an API endpoint.('/api/stock/notify-now')
+
+** Project Links ** : 
+- **GitHub Repository:** [https://github.com/eeit13417/AlertSystemApp]
+- **JIRA Board:** [https://connect-team-heed9vh5.atlassian.net/jira/software/projects/AL/summary]
