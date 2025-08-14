@@ -1,4 +1,6 @@
-** Alert system app **
+**Alert system app**
+
+---
 
 **This apps **contain** the following features:**
 
@@ -28,7 +30,7 @@
 
 ---
 
-** Environment Variables ** : 
+**Environment Variables:** 
 MONGO_URI=mongodb+srv://MingYuanChen:12345@cluster0.5e2wvii.mongodb.net/AlertSystemApp
 ?retryWrites=true&w=majority&appName=Cluster0
 JWT_SECRET=2J8zqkP7VN6bxzg+Wy7DQZsd3Yx8mF3Bl0kch6HYtFs=
@@ -38,12 +40,18 @@ SMTP_PASS=ecoy wiypywvxsuhi
 MAIL_FROM="Inventory Bot <yourgmail@gmail.com>"
 CRON_SCHEDULE=0 9 * * *
 
-** Login **
+---
+
+
+**Login :**
 - Username: `minwen0734@gmail.com`
 - Password: `1234`
 
+---
 
-** Email Notification Scheduler ** : 
+
+
+**Email Notification Scheduler:** 
 The system includes a Low Stock Email Notification feature that automatically sends restock reminder emails on a set schedule.  
 You can configure the schedule time in the `.env` file, or trigger it manually via an API endpoint.('/api/stock/notify-now')
 
