@@ -55,6 +55,8 @@ CRON_SCHEDULE=0 9 * * *
 The system includes a Low Stock Email Notification feature that automatically sends restock reminder emails on a set schedule.  
 You can configure the schedule time in the `.env` file, or trigger it manually via an API endpoint.('/api/stock/notify-now')
 
-** Project Links ** : 
+---
+
+**Project Links:** 
 - **GitHub Repository:** [https://github.com/eeit13417/AlertSystemApp]
 - **JIRA Board:** [https://connect-team-heed9vh5.atlassian.net/jira/software/projects/AL/summary]
