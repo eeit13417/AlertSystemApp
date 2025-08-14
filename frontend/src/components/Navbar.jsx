@@ -2,7 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 const Navbar = () => {
-  const { user, logout } = useAuth();
+  const { admin, logout } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -11,33 +11,28 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-blue-600 text-white p-4 flex justify-between items-center">
-      <Link to="/" className="text-2xl font-bold">Task Manager</Link>
-      <div>
-        {user ? (
-          <>
-            <Link to="/tasks" className="mr-4">Tasks</Link>
-            <Link to="/profile" className="mr-4">Profile</Link>
-            <button
-              onClick={handleLogout}
-              className="bg-red-500 px-4 py-2 rounded hover:bg-red-700"
-            >
-              Logout
-            </button>
-          </>
-        ) : (
-          <>
-            <Link to="/login" className="mr-4">Login</Link>
-            <Link
-              to="/register"
-              className="bg-green-500 px-4 py-2 rounded hover:bg-green-700"
-            >
-              Register
-            </Link>
-          </>
-        )}
+    <header className="sticky top-0 z-50 backdrop-blur border-b border-slate-800/80 bg-slate-950/60">
+      <div className="mx-auto max-w-5xl px-5 py-3 flex items-center justify-between text-slate-100">
+        <div className="flex items-center gap-2">
+          <div className="w-6 h-6 rounded-md bg-gradient-to-br from-indigo-500 to-sky-500 shadow-[0_2px_18px_rgba(99,102,241,0.6)] grid place-items-center">∎</div>
+          <span className="font-semibold">Store Console</span>
+        </div>
+        <nav className="flex items-center gap-1 text-slate-300">
+          {admin ? (
+            <>
+              <Link className="px-3 py-1.5 rounded-lg hover:bg-white/5" to="/inventory">Inventory</Link>
+              <Link className="px-3 py-1.5 rounded-lg hover:bg-white/5" to="/admin">Admin Settings</Link>
+              <Link className="px-3 py-1.5 rounded-lg hover:bg-white/5 opacity-70" to="/login" onClick={handleLogout}>Logout</Link>
+            </>
+          ) : (
+            <>
+              <Link className="px-3 py-1.5 rounded-lg hover:bg-white/5 opacity-70" to="/login">Login</Link>
+              <Link className="px-3 py-1.5 rounded-lg hover:bg-white/5 opacity-70" to="/register">Register</Link>
+            </>
+          )}
+        </nav>
       </div>
-    </nav>
+    </header>
   );
 };
 

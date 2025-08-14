@@ -1,23 +1,23 @@
 
 const Stock = require('../models/Stock');
 
-// const getStocks = async (req, res) => {
-//     try {
-//         const stocks = await Stock.find({ status: 1 });
-//         res.json(stocks);
-//     } catch (error) {
-//         res.status(500).json({ message: error.message });
-//     }
-// };
+const getStocks = async (req, res) => {
+    try {
+        const stocks = await Stock.find({ status: 1 });
+        res.json(stocks);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
 
-// const checkLowStock = async (req, res) => {
-//     try {
-//         const stocks = await Stock.find({ status: 1, quantity: { $lt: 10 } });
-//         res.json(stocks);
-//     } catch (error) {
-//         res.status(500).json({ message: error.message });
-//     }
-// };
+const checkLowStock = async (req, res) => {
+    try {
+        const stocks = await Stock.find({ status: 1, quantity: { $lt: 10 } });
+        res.json(stocks);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
 
 const addStock = async (req, res) => {
     const { title, quantity, createDate, status,updateDate } = req.body;
