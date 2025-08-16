@@ -11,7 +11,7 @@ const mongoose = require('mongoose');
 let Admin, Stock, mailer, cron;
 try { Admin = require('../models/admin'); } catch { Admin = require('../models/Admin'); }
 try { Stock = require('../models/Stock'); } catch { Stock = require('../models/Stock'); }
-try { mailer = require('../utils/mailer'); } catch { mailer = require('../mailer'); }
+try { mailer = require('../utils/mailer'); } catch { mailer = require('../utils/mailer'); }
 try { cron = require('node-cron'); } catch { cron = { schedule: () => ({}) }; }
 
 const bcrypt = require('bcrypt');
