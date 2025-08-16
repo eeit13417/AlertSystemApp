@@ -126,7 +126,7 @@ describe('Auth Controller', () => {
     expect(target.notification).to.equal(true);
     expect(target.save.calledOnce).to.be.true;
     const body = res.json.firstCall.args[0];
-    expect(body.token).to.be.a('string'); // 自己更新會發新 token
+    expect(body.token).to.be.a('string');
   });
 
   it('updateAdmin: super admin 更新他人之 role/status（保證至少一位 super）', async () => {
