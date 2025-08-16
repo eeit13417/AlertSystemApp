@@ -9,7 +9,7 @@ const mongoose = require('mongoose');
 
 // 嘗試相容不同專案路徑命名
 let Admin, Stock, mailer, cron;
-try { Admin = require('../models/admin'); } catch { Admin = require('../models/Admin'); }
+try { Admin = require('../models/Admin'); } catch { Admin = require('../models/Admin'); }
 try { Stock = require('../models/Stock'); } catch { Stock = require('../models/Stock'); }
 try { mailer = require('../utils/mailer'); } catch { mailer = require('../utils/mailer'); }
 try { cron = require('node-cron'); } catch { cron = { schedule: () => ({}) }; }
@@ -265,7 +265,7 @@ describe('Jobs: lowStockCron', () => {
 
   // 先準備 Model 的回傳，再載入 job（載入時 mailer 會用假的 transporter）
   const Stock = require('../models/Stock');
-  const Admin = require('../models/admin');
+  const Admin = require('../models/Admin');
   sandbox.stub(Stock, 'find').returns(asLean([
     { title: 'A', quantity: 3 },
     { title: 'B', quantity: 2 },

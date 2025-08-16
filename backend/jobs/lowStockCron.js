@@ -1,7 +1,7 @@
 const cron = require('node-cron');
 const { sendLowStockEmail } = require('../utils/mailer');
 const Stock = require('../models/Stock'); 
-const Admin = require('../models/admin');
+const Admin = require('../models/Admin');
 
 async function getLowStockFromMongo() {
   return Stock.find({ status: 1, quantity: { $lt: 10 } }).lean();
