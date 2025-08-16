@@ -19,9 +19,7 @@ startLowStockCron();
 if (require.main === module) {
   connectDB();
   const PORT = process.env.PORT || 5001;
-  app.listen(port, '0.0.0.0',  () => {
-    console.log(`API on :${port}`);
-  });
+  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 }
 
 app.post('/api/stock/notify-now', async (req, res) => {
