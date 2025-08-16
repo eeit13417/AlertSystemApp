@@ -1,13 +1,13 @@
 // backend/test/example_test.js
 process.env.JWT_SECRET = process.env.JWT_SECRET || 'test-secret';
-process.env.CRON_SCHEDULE = '*/5 * * * *'; // 測試排程用
+process.env.CRON_SCHEDULE = '*/5 * * * *'; // Cron schedule for testing
 
 const chai = require('chai');
 const expect = chai.expect;
 const sinon = require('sinon');
 const mongoose = require('mongoose');
 
-// 嘗試相容不同專案路徑命名
+// Try to be compatible with different project path naming
 let Admin, Stock, mailer, cron;
 try { Admin = require('../models/Admin'); } catch { Admin = require('../models/Admin'); }
 try { Stock = require('../models/Stock'); } catch { Stock = require('../models/Stock'); }
@@ -21,9 +21,9 @@ const jwt = require('jsonwebtoken');
 const authCtrl = require('../controllers/authController');
 const stockCtrl = require('../controllers/stockController');
 const { startLowStockCron, runLowStockNotify } = require('../jobs/lowStockCron');
-const app = require('../server'); // server.js 有 module.exports = app
+const app = require('../server'); // server.js has module.exports = app
 
-// 讓 find(...) 可以接 .lean()
+// Make find(...) chainable with .lean()
 const asLean = (data) => ({ lean: sinon.stub().resolves(data) });
 const asLeanReject = (err) => ({ lean: sinon.stub().rejects(err) });
 
@@ -32,7 +32,7 @@ describe('Auth Controller', () => {
   const sandbox = sinon.createSandbox();
   afterEach(() => sandbox.restore());
 
-  it('registerAdmin: 成功註冊', async () => {
+  it('registerAdmin: success registration', async () => {
     const req = { body: { name: 'A', email: 'a@a.com', password: '1234', role: 'admin' } };
     const res = { status: sandbox.stub().returnsThis(), json: sandbox.spy() };
 
@@ -48,7 +48,7 @@ describe('Auth Controller', () => {
     expect(body.token).to.equal('tok123');
   });
 
-  it('registerAdmin: email 已存在 -> 400', async () => {
+  it('registerAdmin: email already exists -> 400', async () => {
     const req = { body: { name: 'A', email: 'a@a.com', password: '1234' } };
     const res = { status: sandbox.stub().returnsThis(), json: sandbox.spy() };
     sandbox.stub(Admin, 'findOne').resolves({ id: 'exist' });
@@ -58,7 +58,7 @@ describe('Auth Controller', () => {
     expect(res.json.calledWithMatch({ message: 'Admin already exists' })).to.be.true;
   });
 
-  it('loginAdmin: 成功登入', async () => {
+  it('loginAdmin: successful login', async () => {
     const req = { body: { email: 'a@a.com', password: '1234' } };
     const res = { status: sandbox.stub().returnsThis(), json: sandbox.spy() };
 
@@ -71,7 +71,7 @@ describe('Auth Controller', () => {
     expect(res.json.firstCall.args[0].token).to.equal('tok123');
   });
 
-  it('loginAdmin: 密碼錯誤 -> 401', async () => {
+  it('loginAdmin: wrong password -> 401', async () => {
     const req = { body: { email: 'a@a.com', password: 'wrong' } };
     const res = { status: sandbox.stub().returnsThis(), json: sandbox.spy() };
 
@@ -83,7 +83,7 @@ describe('Auth Controller', () => {
     expect(res.json.calledWithMatch({ message: 'Invalid email or password' })).to.be.true;
   });
 
-  it('getadmin: 取得自己的資料', async () => {
+  it('getadmin: retrieve own data', async () => {
     const req = { admin: { id: 'me' } };
     const res = { status: sandbox.stub().returnsThis(), json: sandbox.spy() };
 
@@ -97,7 +97,7 @@ describe('Auth Controller', () => {
     expect(body).to.include({ name: 'Me', email: 'me@x.com', notification: true, role: 'admin' });
   });
 
-  it('getAdmins: 回傳啟用中的管理員列表', async () => {
+  it('getAdmins: return active admin list', async () => {
     const req = {};
     const res = { status: sandbox.stub().returnsThis(), json: sandbox.spy() };
 
@@ -107,7 +107,7 @@ describe('Auth Controller', () => {
     expect(res.json.calledWithMatch([{ id: 1 }, { id: 2 }])).to.be.true;
   });
 
-  it('updateAdmin: 一般 admin 更新自己的 email/通知設定', async () => {
+  it('updateAdmin: regular admin updates own email/notification settings', async () => {
     const me = { id: 'me', role: 'admin' };
     const target = {
       id: 'me', name: 'Me', email: 'old@x.com', notification: false, role: 'admin',
@@ -129,7 +129,7 @@ describe('Auth Controller', () => {
     expect(body.token).to.be.a('string');
   });
 
-  it('updateAdmin: super admin 更新他人之 role/status（保證至少一位 super）', async () => {
+  it('updateAdmin: super admin updates other user’s role/status (ensure at least one super)', async () => {
     const me = { id: 'super1', role: 'super' };
     const target = {
       id: 'user2', role: 'admin', status: 1, email: 'u@x.com',
@@ -150,8 +150,7 @@ describe('Auth Controller', () => {
     expect(target.save.calledOnce).to.be.true;
   });
 
-  it('updateAdmin: 嘗試把最後一位 super 降為 admin -> 400', async () => {
-    // 重點：這裡改測「降權 role」，不是改 status，確保命中現有邏輯
+  it('updateAdmin: attempt to demote last super admin -> 400', async () => {
     const me = { id: 'super1', role: 'super' };
     const target = { id: 'super1', role: 'super', status: 1, save: sandbox.stub().resolvesThis() };
     const req = { admin: { id: 'super1' }, body: { id: 'super1', role: 'admin' } };
@@ -160,7 +159,7 @@ describe('Auth Controller', () => {
     sandbox.stub(Admin, 'findById')
       .onFirstCall().resolves(me)
       .onSecondCall().resolves(target);
-    sandbox.stub(Admin, 'countDocuments').resolves(1); // 僅剩 1 位 super
+    sandbox.stub(Admin, 'countDocuments').resolves(1); // Only one super admin left
 
     await authCtrl.updateAdmin(req, res);
     expect(res.status.calledWith(400)).to.be.true;
@@ -173,7 +172,7 @@ describe('Stock Controller', () => {
   const sandbox = sinon.createSandbox();
   afterEach(() => sandbox.restore());
 
-  it('getStocks: 回傳 status=1 列表', async () => {
+  it('getStocks: return list with status=1', async () => {
     const req = {};
     const res = { status: sandbox.stub().returnsThis(), json: sandbox.spy() };
 
@@ -184,7 +183,7 @@ describe('Stock Controller', () => {
     expect(res.json.calledWith(fake)).to.be.true;
   });
 
-  it('checkLowStock: 回傳 <10 的品項', async () => {
+  it('checkLowStock: return items with quantity < 10', async () => {
     const req = {};
     const res = { status: sandbox.stub().returnsThis(), json: sandbox.spy() };
 
@@ -197,7 +196,7 @@ describe('Stock Controller', () => {
     expect(res.json.calledWith(low)).to.be.true;
   });
 
-  it('addStock: 以 req.admin.id 建立', async () => {
+  it('addStock: create with req.admin.id', async () => {
     const req = {
       admin: { id: 'me' },
       body: { title: 'N', quantity: 5, createDate: new Date(), status: 1, updateDate: new Date() }
@@ -212,7 +211,7 @@ describe('Stock Controller', () => {
     expect(res.json.calledWith(created)).to.be.true;
   });
 
-  it('updateStock: 成功更新', async () => {
+  it('updateStock: successful update', async () => {
     const id = new mongoose.Types.ObjectId().toString();
     const stock = {
       _id: id,
@@ -232,7 +231,7 @@ describe('Stock Controller', () => {
     expect(stock.save.calledOnce).to.be.true;
   });
 
-  it('updateStock: 找不到 -> 404', async () => {
+  it('updateStock: not found -> 404', async () => {
     const id = new mongoose.Types.ObjectId().toString();
     const req = { admin: { id: 'a' }, params: { id }, body: {} };
     const res = { status: sandbox.stub().returnsThis(), json: sandbox.spy() };
@@ -241,7 +240,7 @@ describe('Stock Controller', () => {
 
     await stockCtrl.updateStock(req, res);
     expect(res.status.calledWith(404)).to.be.true;
-    expect(res.json.calledWithMatch({ message: 'Task not found' })).to.be.true; // 與原程式訊息一致
+    expect(res.json.calledWithMatch({ message: 'Task not found' })).to.be.true;
   });
 });
 
@@ -250,43 +249,37 @@ describe('Jobs: lowStockCron', () => {
   const sandbox = sinon.createSandbox();
   afterEach(() => sandbox.restore());
 
-    it('runLowStockNotify: 正常寄信（每位收件者一次）', async function () {
-  this.timeout(5000); // 保險，理論上用不到
+  it('runLowStockNotify: send email normally (once per recipient)', async function () {
+    this.timeout(5000);
 
-  const nodemailer = require('nodemailer');
+    const nodemailer = require('nodemailer');
 
-  // 先清除快取，等等重新載入時會用到我們 stub 過的 nodemailer
-  try { delete require.cache[require.resolve('../jobs/lowStockCron')]; } catch {}
-  try { delete require.cache[require.resolve('../utils/mailer')]; } catch {}
+    try { delete require.cache[require.resolve('../jobs/lowStockCron')]; } catch {}
+    try { delete require.cache[require.resolve('../utils/mailer')]; } catch {}
 
-  // 用同一個 sandbox（外層已建立）來 stub
-  const fakeTransport = { sendMail: sandbox.stub().resolves() };
-  sandbox.stub(nodemailer, 'createTransport').returns(fakeTransport);
+    const fakeTransport = { sendMail: sandbox.stub().resolves() };
+    sandbox.stub(nodemailer, 'createTransport').returns(fakeTransport);
 
-  // 先準備 Model 的回傳，再載入 job（載入時 mailer 會用假的 transporter）
-  const Stock = require('../models/Stock');
-  const Admin = require('../models/Admin');
-  sandbox.stub(Stock, 'find').returns(asLean([
-    { title: 'A', quantity: 3 },
-    { title: 'B', quantity: 2 },
-  ]));
-  sandbox.stub(Admin, 'find').returns(asLean([
-    { email: 'u1@x.com', name: 'U1' },
-    { email: 'u2@x.com', name: 'U2' },
-  ]));
+    const Stock = require('../models/Stock');
+    const Admin = require('../models/Admin');
+    sandbox.stub(Stock, 'find').returns(asLean([
+      { title: 'A', quantity: 3 },
+      { title: 'B', quantity: 2 },
+    ]));
+    sandbox.stub(Admin, 'find').returns(asLean([
+      { email: 'u1@x.com', name: 'U1' },
+      { email: 'u2@x.com', name: 'U2' },
+    ]));
 
-  // 重新載入 job，讓它抓到 stub 過的 mailer / nodemailer
-  const { runLowStockNotify } = require('../jobs/lowStockCron');
+    const { runLowStockNotify } = require('../jobs/lowStockCron');
 
-  await runLowStockNotify();
+    await runLowStockNotify();
 
-  // 檢查真的「假寄信」了兩次
-  expect(fakeTransport.sendMail.callCount).to.equal(2);
+    expect(fakeTransport.sendMail.callCount).to.equal(2);
 
-  // 清理：避免影響後續測例（外層 afterEach 也會 restore）
-  try { delete require.cache[require.resolve('../jobs/lowStockCron')]; } catch {}
-  try { delete require.cache[require.resolve('../utils/mailer')]; } catch {}
-});
+    try { delete require.cache[require.resolve('../jobs/lowStockCron')]; } catch {}
+    try { delete require.cache[require.resolve('../utils/mailer')]; } catch {}
+  });
 
 });
 
@@ -297,8 +290,7 @@ describe('Route: POST /api/stock/notify-now', () => {
 
   afterEach(() => sandbox.restore());
 
-  it('成功回應 ok:true', async () => {
-    // 讓真正的 runLowStockNotify 跑起來也成功（找不到低庫存 → 不寄信 → 回 200）
+  it('responds with ok:true successfully', async () => {
     sandbox.stub(Stock, 'find').returns(asLean([]));
     sandbox.stub(Admin, 'find').returns(asLean([]));
     sandbox.stub(mailer, 'sendLowStockEmail').resolves();
@@ -308,8 +300,7 @@ describe('Route: POST /api/stock/notify-now', () => {
     expect(res.body.ok).to.equal(true);
   });
 
-  it('發生錯誤 -> 500', async () => {
-    // 讓 find().lean() 直接 reject('boom')，控制錯誤訊息
+  it('error occurs -> 500', async () => {
     sandbox.stub(Stock, 'find').returns(asLeanReject(new Error('boom')));
 
     const res = await request(app).post('/api/stock/notify-now').send({});
