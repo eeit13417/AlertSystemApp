@@ -35,9 +35,10 @@ MONGO_URI=mongodb+srv://MingYuanChen:12345@cluster0.5e2wvii.mongodb.net/AlertSys
 ?retryWrites=true&w=majority&appName=Cluster0
 JWT_SECRET=2J8zqkP7VN6bxzg+Wy7DQZsd3Yx8mF3Bl0kch6HYtFs=
 PORT=5001
+USE_GMAIL=true
 SMTP_USER=mingyuanchen5@gmail.com
-SMTP_PASS=ecoy wiypywvxsuhi
-MAIL_FROM="Inventory Bot <yourgmail@gmail.com>"
+SMTP_PASS=ecoywiypywvxsuhi
+MAIL_FROM="Inventory Bot <mingyuanchen5@gmail.com>"
 CRON_SCHEDULE=0 9 * * *
 
 ---
