@@ -32,14 +32,14 @@
 ---
 
 **Environment Variables:** 
-- **MONGO_URI=**mongodb+srv://MingYuanChen:12345@cluster0.5e2wvii.mongodb.net/AlertSystemApp?retryWrites=true&w=majority&appName=Cluster0
-- **JWT_SECRET=**2J8zqkP7VN6bxzg+Wy7DQZsd3Yx8mF3Bl0kch6HYtFs=
-- **PORT=**5001
-- **USE_GMAIL=**true
-- **SMTP_USER=**mingyuanchen5@gmail.com
-- **SMTP_PASS=**ecoywiypywvxsuhi
-- **MAIL_FROM=**"Inventory Bot <mingyuanchen5@gmail.com>"
-- **CRON_SCHEDULE=**0 9 * * *
+- MONGO_URI=mongodb+srv://MingYuanChen:12345@cluster0.5e2wvii.mongodb.net/AlertSystemApp?retryWrites=true&w=majority&appName=Cluster0
+- JWT_SECRET=2J8zqkP7VN6bxzg+Wy7DQZsd3Yx8mF3Bl0kch6HYtFs=
+- PORT=5001
+- USE_GMAIL=true
+- SMTP_USER=mingyuanchen5@gmail.com
+- SMTP_PASS=ecoywiypywvxsuhi
+- MAIL_FROM="Inventory Bot <mingyuanchen5@gmail.com>"
+- CRON_SCHEDULE=0 9 * * *
 
 ---
 
@@ -58,7 +58,7 @@ You can configure the schedule time in the `.env` file, or trigger it manually v
 
 ---
 
-**1. Clone the Repository**
+**1 Clone the Repository:**
 - Please run the following code in your terminal. 
 
 - git clone https://github.com/eeit13417/AlertSystemApp.git. 
@@ -67,12 +67,12 @@ You can configure the schedule time in the `.env` file, or trigger it manually v
 
 - npm install.
 
-**2.** 
-- create a .env file in the backend folder.
+**2 create a .env file in the backend folder:** 
+- 
 - Then, you can use the code to run developing mode.
 - npm run dev
 
-**3 Frontend Setup.** 
+**3 Frontend Setup:** 
 - cd frontend.
 - npm install.
 - npm start.
