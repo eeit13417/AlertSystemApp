@@ -49,4 +49,6 @@ const updateStock = async (req, res) => {
     }
 };
 
+
+
 module.exports = { getStocks, checkLowStock, addStock, updateStock };
